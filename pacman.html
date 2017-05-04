@@ -19,8 +19,18 @@
     </audio>
 
     <script type="text/javascript">
+	    
+    var score =0;
+    var scoreTxt;
+    
+    var bonus=0;
+    var bonusTxt;
+        
+    var lives=3;
+    var livesTxt;
+	    
 
-    var game = new Phaser.Game(500, 550, Phaser.AUTO); // to allaxa gia na mporw na topo8etisw score zwes kai bonus
+    var game = new Phaser.Game(498, 496, Phaser.AUTO); // to allaxa gia na mporw na topo8etisw score zwes kai bonus
 
     var Pacman = function (game) {
 
