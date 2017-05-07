@@ -80,8 +80,8 @@
             this.load.image('dot', 'assets/coin.png');
             // this.load.image('coin','assets/coin.png');
             
-            this.load.image('str', 'assets/str.png');// ANTIKEIMENO FRAOULA 
-            this.load.image('che', 'assets/che.png');// ANTIKEIMENO KERASI
+            
+            this.load.image('cherry', 'assets/cherry.png');// ANTIKEIMENO KERASI
             
             this.load.image('tiles', 'assets/pacman-tiles.png');
             this.load.spritesheet('pacman', 'assets/birdcar.png', 32, 32);
@@ -100,16 +100,15 @@
 
             this.dots = this.add.physicsGroup();
             //this.coins = this.add.physicsGroup();
-            this.strs = this.add.physicsGroup();
-            this.ches = this.add.physicsGroup();
+            this.cherries = this.add.physicsGroup();
 	    
 	    
 		
-	    // ebala ta nea antikeimena
-            this.map.createFromTiles(36, this.safetile, 'str', this.layer, this.strs);
+	  
+           
             this.map.createFromTiles(7, this.safetile, 'dot', this.layer, this.dots);
 	     // this.map.createFromTiles(9, this.safetile, 'coin', this.layer, this.coins)
-            this.map.createFromTiles(35, this.safetile, 'che', this.layer, this.ches);
+            this.map.createFromTiles(35, this.safetile, 'cherry', this.layer, this.cherries);
             
   
        
@@ -120,10 +119,9 @@
             //this.coins.setAll('x', 12, false, false, 1);
             //this.coins.setAll('y', 12, false, false, 1);
       
-	    this.strs.setAll('x', 6, false, false, 1);
-	    this.strs.setAll('y', 6, false, false, 1);
-	    this.ches.setAll('x', 6, false, false, 1);
-	    this.ches.setAll('y', 6, false, false, 1);
+	  
+	    this.cherries.setAll('x', 6, false, false, 1);
+	    this.cherries.setAll('y', 6, false, false, 1);
             
 	    //  Pacman should collide with everything except the safe tile
             this.map.setCollisionByExclusion([this.safetile], true, this.layer);
@@ -276,41 +274,31 @@
             {
                 this.dots.callAll('revive');
             }
+		if (score % 300 === 0)
+            {
+            	this.cherries.callAll('revive');
+            }
 
         },
 
 	
-        eatStr: function(pacman,str){
-            str.kill();
-	    this.score+=20;
-	    this.bonus += 20;
-            this.scoreText.text= 'Score: ' + score;
-	    this.bonusTxt.text = 'Bonus : ' + bonus;
-	   
-	    var audio = new Audio('assets/sound.mp3');
-            audio.play()
-		
-	    if (this.strs.total === 0)
-            {
-                this.strs.callAll('revive');
-            }
-	},
+      
 	
 	
 	    
-	eatChe: function(pacman,che){
-            che.kill();
-	    this.score+=20;
-	    this.bonus += 20;
-            this.scoreText.text= 'Score: ' + score;
-	    this.bonusTxt.text = 'Bonus : ' + bonus;
+	eatCherry: function(pacman,cherry){
+            cherry.kill();
+	    this.score+=50;
+	    this.scoreText.text= 'Score: ' + score;
+	    this.bonus += 50;
+            this.bonusTxt.text = 'Bonus : ' + bonus;
 	   
 	    var audio = new Audio('assets/sound.mp3');
             audio.play()	
 		
 		if (this.ches.total === 0)
             {
-                this.ches.callAll('revive');
+                this.cherries.callAll('revive');
             }
 		
          },	
@@ -321,7 +309,8 @@
           
             this.physics.arcade.collide(this.pacman, this.layer);
             this.physics.arcade.overlap(this.pacman, this.dots, this.eatDot, null, this);
-
+            this.physics.arcade.overlap(this.pacman, this.cherries, this.eatCherry, null, this);
+           
             this.marker.x = this.math.snapToFloor(Math.floor(this.pacman.x), this.gridsize) / this.gridsize;
             this.marker.y = this.math.snapToFloor(Math.floor(this.pacman.y), this.gridsize) / this.gridsize;
 
