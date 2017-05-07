@@ -13,7 +13,7 @@
     <script src="//cdn.jsdelivr.net/phaser/2.2.2/phaser.min.js"></script>
 </head>
 <body>
-    // topo8etisi mousikis sto paixnidi(ftiaximo)
+    
     <audio autoplay loop>     
         <source src="assets/90s_disco.mp3" type="audio/mp3">
     </audio>
@@ -99,15 +99,13 @@
             this.layer = this.map.createLayer('Pacman');
 
             this.dots = this.add.physicsGroup();
-            //this.coins = this.add.physicsGroup();
             this.cherries = this.add.physicsGroup();
 	    
 	    
 		
 	  
            
-            this.map.createFromTiles(7, this.safetile, 'dot', this.layer, this.dots);
-	     // this.map.createFromTiles(9, this.safetile, 'coin', this.layer, this.coins)
+            this.map.createFromTiles(7, this.safetile, 'dot', this.layer, this.dots)
             this.map.createFromTiles(35, this.safetile, 'cherry', this.layer, this.cherries);
             
   
@@ -140,7 +138,7 @@
             this.move(Phaser.LEFT);
 		
 	    scoreTxt = game.add.text(30, 0,'Score: 0', {font: '20px 	Arial',  fill: '#FFFFFF'});
-            bonusTxt = game.add.text(190,0,'Bonus: 0', {font: '20px 	Arial',  fill: '#FFFFFF'});
+            bonusTxt = game.add.text(190,0,'Bonus: +0', {font: '20px 	Arial',  fill: '#FFFFFF'});
             livesTxt = game.add.text(330,0,'Lives: 3', {font: '20px 	Arial',  fill: '#FFFFFF'});
 		
 		
@@ -263,12 +261,14 @@
         eatDot: function (pacman, dot) {
 
             dot.kill();
+	   
+	    var audio = new Audio('assets/sound.mp3');
+            audio.play()
+	    
 	    score += 10;
             scoreTxt.text = 'Score : ' + score;
             
 		
-	    var audio = new Audio('assets/sound.mp3');
-            audio.play()
             
             if (this.dots.total === 0)
             {
@@ -288,19 +288,16 @@
 	    
 	eatCherry: function(pacman,cherry){
             cherry.kill();
-	    this.score+=100;
-	    this.scoreText.text= 'Score: ' + score;
-	    this.bonus += 100;
-            this.bonusTxt.text = 'Bonus : ' + bonus;
 	   
 	    var audio = new Audio('assets/eatfruit.wav');
             audio.play()	
 		
-		if (this.ches.total === 0)
-            {
-                this.cherries.callAll('revive');
-            }
-		
+            this.score+=100;
+	    this.scoreText.text= 'Score: ' + score;
+	    this.bonus += 100;
+            this.bonusTxt.text = 'Bonus : +' + bonus;
+	   
+	    
          },	
        
 	    
