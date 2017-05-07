@@ -279,11 +279,7 @@
         },
 
 	
-      
-	
-	
-	    
-	eatCherry: function(pacman,cherry){
+        eatCherry: function(pacman,cherry){
             cherry.kill();
 	   
 	    var audio = new Audio('assets/eatfruit.wav');
@@ -294,7 +290,7 @@
 	   
             this.score+=100;
 	    this.scoreText.text= 'Score: ' + score;
-	   
+	  
 	    
          },	
        
@@ -304,7 +300,7 @@
           
             this.physics.arcade.collide(this.pacman, this.layer);
             this.physics.arcade.overlap(this.pacman, this.dots, this.eatDot, null, this);
-            this.physics.arcade.overlap(this.pacman, this.cherryss, this.eatCherry, null, this);//bonus
+            this.physics.arcade.overlap(this.pacman, this.cherrys, this.eatCherry, null, this);//bonus
            
             this.marker.x = this.math.snapToFloor(Math.floor(this.pacman.x), this.gridsize) / this.gridsize;
             this.marker.y = this.math.snapToFloor(Math.floor(this.pacman.y), this.gridsize) / this.gridsize;
