@@ -99,14 +99,14 @@
             this.layer = this.map.createLayer('Pacman');
 
             this.dots = this.add.physicsGroup();
-            this.cherrys = this.add.physicsGroup();
+            this.cherries = this.add.physicsGroup(); // bonus
 	    
 	    
 		
 	  
            
             this.map.createFromTiles(7, this.safetile, 'dot', this.layer, this.dots)
-            this.map.createFromTiles(35, this.safetile, 'cherry', this.layer, this.cherrys);
+            this.map.createFromTiles(35, this.safetile, 'cherry', this.layer, this.cherries);
             
   
        
@@ -118,8 +118,8 @@
             //this.coins.setAll('y', 12, false, false, 1);
       
 	  
-	   // this.cherries.setAll('x', 0, false, false, 1);
-	    //this.cherries.setAll('y', 0, false, false, 1);
+	    this.cherries.setAll('x', 1, false, false, 1);
+	    this.cherries.setAll('y', 1, false, false, 1);
             
 	    //  Pacman should collide with everything except the safe tile
             this.map.setCollisionByExclusion([this.safetile], true, this.layer);
@@ -273,6 +273,7 @@
             if (this.dots.total === 0)
             {
                 this.dots.callAll('revive');
+	        this.cherries.callAll('revive');    
             }
 		
 
@@ -300,7 +301,7 @@
           
             this.physics.arcade.collide(this.pacman, this.layer);
             this.physics.arcade.overlap(this.pacman, this.dots, this.eatDot, null, this);
-            this.physics.arcade.overlap(this.pacman, this.cherrys, this.eatCherry, null, this);//bonus
+            this.physics.arcade.overlap(this.pacman, this.cherries, this.eatCherry, null, this);//bonus
            
             this.marker.x = this.math.snapToFloor(Math.floor(this.pacman.x), this.gridsize) / this.gridsize;
             this.marker.y = this.math.snapToFloor(Math.floor(this.pacman.y), this.gridsize) / this.gridsize;
