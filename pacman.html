@@ -274,10 +274,7 @@
             {
                 this.dots.callAll('revive');
             }
-		if (score % 770 === 0)
-            {
-            	this.cherries.callAll('revive');
-            }
+		
 
         },
 
@@ -295,7 +292,7 @@
             this.score+=100;
 	    this.scoreText.text= 'Score: ' + score;
 	    this.bonus += 100;
-            this.bonusTxt.text = 'Bonus : +' + bonus;
+            this.bonusTxt.text = 'Bonus : ' + bonus;
 	   
 	    
          },	
