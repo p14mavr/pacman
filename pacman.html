@@ -120,8 +120,8 @@
             //this.coins.setAll('y', 12, false, false, 1);
       
 	  
-	    this.cherries.setAll('x', 6, false, false, 1);
-	    this.cherries.setAll('y', 6, false, false, 1);
+	    this.cherries.setAll('x', 0, false, false, 1);
+	    this.cherries.setAll('y', 0, false, false, 1);
             
 	    //  Pacman should collide with everything except the safe tile
             this.map.setCollisionByExclusion([this.safetile], true, this.layer);
@@ -274,7 +274,7 @@
             {
                 this.dots.callAll('revive');
             }
-		if (score % 300 === 0)
+		if (score % 770 === 0)
             {
             	this.cherries.callAll('revive');
             }
@@ -288,12 +288,12 @@
 	    
 	eatCherry: function(pacman,cherry){
             cherry.kill();
-	    this.score+=50;
+	    this.score+=100;
 	    this.scoreText.text= 'Score: ' + score;
-	    this.bonus += 50;
+	    this.bonus += 100;
             this.bonusTxt.text = 'Bonus : ' + bonus;
 	   
-	    var audio = new Audio('assets/sound.mp3');
+	    var audio = new Audio('assets/eatfruit.wav');
             audio.play()	
 		
 		if (this.ches.total === 0)
