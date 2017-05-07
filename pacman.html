@@ -99,14 +99,14 @@
             this.layer = this.map.createLayer('Pacman');
 
             this.dots = this.add.physicsGroup();
-            this.cherries = this.add.physicsGroup();
+            this.cherrys = this.add.physicsGroup();
 	    
 	    
 		
 	  
            
             this.map.createFromTiles(7, this.safetile, 'dot', this.layer, this.dots)
-            this.map.createFromTiles(35, this.safetile, 'cherry', this.layer, this.cherries);
+            this.map.createFromTiles(35, this.safetile, 'cherry', this.layer, this.cherrys);
             
   
        
@@ -118,8 +118,8 @@
             //this.coins.setAll('y', 12, false, false, 1);
       
 	  
-	    this.cherries.setAll('x', 6, false, false, 1);
-	    this.cherries.setAll('y', 6, false, false, 1);
+	   // this.cherries.setAll('x', 0, false, false, 1);
+	    //this.cherries.setAll('y', 0, false, false, 1);
             
 	    //  Pacman should collide with everything except the safe tile
             this.map.setCollisionByExclusion([this.safetile], true, this.layer);
@@ -289,10 +289,11 @@
 	    var audio = new Audio('assets/eatfruit.wav');
             audio.play()	
 		
+            this.bonus += 100;
+            this.bonusTxt.text = 'Bonus : ' + bonus;
+	   
             this.score+=100;
 	    this.scoreText.text= 'Score: ' + score;
-	    this.bonus += 100;
-            this.bonusTxt.text = 'Bonus : ' + bonus;
 	   
 	    
          },	
@@ -303,7 +304,7 @@
           
             this.physics.arcade.collide(this.pacman, this.layer);
             this.physics.arcade.overlap(this.pacman, this.dots, this.eatDot, null, this);
-            this.physics.arcade.overlap(this.pacman, this.cherries, this.eatCherry, null, this);
+            this.physics.arcade.overlap(this.pacman, this.cherryss, this.eatCherry, null, this);//bonus
            
             this.marker.x = this.math.snapToFloor(Math.floor(this.pacman.x), this.gridsize) / this.gridsize;
             this.marker.y = this.math.snapToFloor(Math.floor(this.pacman.y), this.gridsize) / this.gridsize;
