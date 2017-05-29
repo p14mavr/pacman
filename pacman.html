@@ -28,7 +28,9 @@
         
     var lives=3;
     var livesTxt;
-	    
+   
+    Gdir = null;
+    Granddir = null;    
 
     var game = new Phaser.Game(498, 496, Phaser.AUTO); // to allaxa gia na mporw na topo8etisw score zwes kai bonus
 
@@ -37,7 +39,18 @@
         this.map = null;
         this.layer = null;
         this.pacman = null;
-
+	   
+	    this.ghost1= null;
+	    this.ghost2= null;
+	    this.ghost3= null;
+	    this.ghost4= null;
+	    this.GhostSpeed= 100;
+	    
+	    
+	    this.life= 1;
+	    this.dead = false;
+	    
+	    
         this.safetile = 14;
         this.gridsize = 16;
 
@@ -52,8 +65,13 @@
 
         this.current = Phaser.NONE;
         this.turning = Phaser.NONE;
-        
-       
+                this.Gcurrent = Phaser.NONE;
+	this.Gturning = Phaser.NONE;
+                this.Gdir = Phaser.NONE;
+	        this.Granddir = Phaser.NONE;
+	    
+	    
+	    
     };
 
     Pacman.prototype = {
@@ -85,7 +103,8 @@
             
             this.load.image('tiles', 'assets/pacman-tiles.png');
             this.load.spritesheet('pacman', 'assets/birdcar.png', 32, 32);
-            this.load.tilemap('map', 'assets/pacman-map3.json', null, Phaser.Tilemap.TILED_JSON);
+            this.load.spritesheet('ghost', 'assets/ghost.png', 32, 53);
+	    this.load.tilemap('map', 'assets/pacman-map3.json', null, Phaser.Tilemap.TILED_JSON);
 
             //  Needless to say, graphics (C)opyright Namco
 
