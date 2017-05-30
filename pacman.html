@@ -23,7 +23,7 @@
     var score =0;
     var scoreTxt;
     
-    var bonus='';
+    var bonus= 0;
     var bonusTxt;
         
     var lives=3;
@@ -146,7 +146,7 @@
 		
 		// screen messages
 	    scoreTxt = game.add.text(30, 0,'Score: 0', {font: '20px 	Arial',  fill: '#FFFFFF'});
-            bonusTxt = game.add.text(190,0,'Bonus: ', {font: '20px 	Arial',  fill: '#FFFFFF'});
+            bonusTxt = game.add.text(190,0,'Bonus: 0', {font: '20px 	Arial',  fill: '#FFFFFF'});
             livesTxt = game.add.text(330,0,'Lives: 3', {font: '20px 	Arial',  fill: '#FFFFFF'});
 		
 		
@@ -294,12 +294,15 @@
 	    var audio = new Audio('assets/eatfruit.wav');
             audio.play()	
 		
-            this.bonus += 100;
-            this.bonusTxt.text = 'Bonus : ' + bonus;
+            bonus += 100;
+            bonusTxt.text = 'Bonus : ' + bonus;
 	   
-            this.score+=100;
-	    this.scoreText.text= 'Score: ' + score;
-	  
+            score+=100;
+	    scoreText.text= 'Score: ' + score;
+	   
+	       if (this.cherries.total === 0)
+            {
+                this.cherries.callAll('revive');
 	    
          },	
        
