@@ -294,9 +294,12 @@
 	    var audio = new Audio('assets/eatfruit.wav');
             audio.play()	
 		
-            bonus += 100;
-            bonusTxt.text = 'Bonus : ' + bonus;
+            this.bonus += 100;
+            this.bonusTxt.text = 'Bonus : ' + bonus;
 	   
+            this.score+=100;
+	    this.scoreText.text= 'Score: ' + score;
+
            
 	    
 	    
