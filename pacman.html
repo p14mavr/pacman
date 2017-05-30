@@ -23,27 +23,13 @@
     var score =0;
     var scoreTxt;
     
-	    
-	    //allages
-       var ChoseDif = false;
-	var DifContinue = null;
-	var OK = false;
-	var timer; 
-    var tcount = 4;    
-    var scount = "";
-    var gametimeM = "-";
-    var gametimeS = "-";    
-	    
-	    
-	    
     var bonus=0;
     var bonusTxt;
         
     var lives=3;
     var livesTxt;
    
-    Gdir = null;
-    Granddir = null;    
+       
 
     var game = new Phaser.Game(498, 496, Phaser.AUTO); // to allaxa gia na mporw na topo8etisw score zwes kai bonus
 
@@ -52,21 +38,8 @@
         this.map = null;
         this.layer = null;
         this.pacman = null;
-	   
-	    //ALLAGES
-	    this.ghost1= null;
-	    this.ghost2= null;
-	    this.ghost3= null;
-	    this.ghost4= null;
-	    this.GhostSpeed= 100;
-	    this.FullGhostSpeed= 150; 
+	  
 	    
-	    this.lives= 1;
-	    this.life1= null;
-	    this.life2= null;
-	   this.life3= null; 
-	    this.dead = false;
-	    //
 	    
         this.safetile = 14;
         this.gridsize = 16;
@@ -82,12 +55,7 @@
 
         this.current = Phaser.NONE;
         this.turning = Phaser.NONE;
-            //ALLAGES   
-	    this.Gcurrent = Phaser.NONE;
-	this.Gturning = Phaser.NONE;
-                this.Gdir = Phaser.NONE;
-	        this.Granddir = Phaser.NONE;
-	    
+               
 	    
 	    
     };
@@ -116,12 +84,12 @@
             this.load.image('dot', 'assets/coin.png');
             // this.load.image('coin','assets/coin.png');
             
+            
             this.load.image('cherry', 'assets/cherry.png');// ANTIKEIMENO KERASI
-            this.load.image('life', 'assets/heart.png');
+            this.load.image('lives', 'assets/heart.png');
             this.load.image('tiles', 'assets/pacman-tiles.png');
             this.load.spritesheet('pacman', 'assets/birdcar.png', 32, 32);
-            this.load.spritesheet('ghost', 'assets/ghost.png', 32, 53);
-	    this.load.tilemap('map', 'assets/pacman-map3.json', null, Phaser.Tilemap.TILED_JSON);
+            this.load.tilemap('map', 'assets/pacman-map3.json', null, Phaser.Tilemap.TILED_JSON);
 
             //  Needless to say, graphics (C)opyright Namco
 
@@ -135,9 +103,8 @@
             this.layer = this.map.createLayer('Pacman');
 
             this.dots = this.add.physicsGroup();
-		//ALLAGES
-                        this.cherries = this.add.physicsGroup();
-		       
+            this.cherries = this.add.physicsGroup();
+		        
 
 	    
 	    
@@ -146,20 +113,16 @@
            
             this.map.createFromTiles(7, this.safetile, 'dot', this.layer, this.dots)
             this.map.createFromTiles(3, this.safetile, 'cherry', this.layer, this.cherries);
-            this.cherry.callAll('kill');
-	    this.map.createFromTiles(62, this.safetile, null, this.layer, this.teleport1);
-	    this.map.createFromTiles(63, this.safetile, null, this.layer, this.teleport2);
-            this.map.createFromTiles(170, this.safetile, null, this.layer, this.teleport3);
-            this.map.createFromTiles(171, this.safetile, null, this.layer, this.teleport4);
-
+          
+	    
   
        
             
             //  The dots will need to be offset by 6px to put them back in the middle of the grid
             this.dots.setAll('x', 6, false, false, 1);
             this.dots.setAll('y', 6, false, false, 1);
-            //this.coins.setAll('x', 12, false, false, 1);
-            //this.coins.setAll('y', 12, false, false, 1);
+            this.cherries.setAll('x', 12, false, false, 1);
+            this.cherries.setAll('y', 12, false, false, 1);
       
 	 
             
@@ -173,233 +136,19 @@
 
             this.physics.arcade.enable(this.pacman);
             this.pacman.body.setSize(16, 16, 0, 0);
-	 
-		
-		
-	// allages	
-	
-		
-		 this.pacman.animations.add('munchRL', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15], 40, true);
-			this.pacman.animations.add('munchUP', [16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31], 40, true);
-			this.pacman.animations.add('munchDOWN', [32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47], 40, true);
-			
-			this.pacman.play('munchRL');
-			this.move(Phaser.NONE);
-			this.input.disabled = false;
-			this.pacman.visible = false;
-		 
-		
-	// ghost1
-		  this.ghost1 = this.add.sprite((9 * 16) + 8, (13 * 16) + 8, 'ghost', 0);
-            this.ghost1.anchor.set(0.5);
-			this.ghost1.speed = this.GhostSpeed;
-			
-			this.physics.arcade.enable(this.ghost1);
-            this.ghost1.body.setSize(16, 16, 0, 0);
-			
-			this.ghost1.animations.add('walkRL', [0, 1, 2, 3, 4], 40, true);
-			this.ghost1.animations.add('walkUP', [5, 6, 7, 8, 9], 40, true);
-			this.ghost1.animations.add('walkDOWN', [10, 11, 12, 13, 14], 40, true);
-			
-			this.ghost1.play('walkRL');
-			this.Gcurrent = Phaser.RIGHT;
-		
-		
-		// ghost2 
-		
-		 this.ghost2  = this.add.sprite((15 * 16) + 8, (24 * 16) + 8, 'ghost ', 0);
-            this.ghost2 .anchor.set(0.5);
-			this.ghost2 .speed = this.GhostSpeed;
-			
-			this.physics.arcade.enable(this.ghost2 );
-            this.ghost2 .body.setSize(16, 16, 0, 0);
-			
-			this.ghost2 .animations.add('walkRL', [0, 1, 2, 3, 4], 40, true);
-			this.ghost2 .animations.add('walkUP', [5, 6, 7, 8, 9], 40, true);
-			this.ghost2 .animations.add('walkDOWN', [10, 11, 12, 13, 14], 40, true);
-			
-			this.ghost2 .play('walkRL');
-			this.Gcurrent = Phaser.RIGHT;
-		
-		//ghost3
-		
-		this.ghost3 = this.add.sprite((39 * 16) + 8, (8 * 16) + 8, 'ghost', 0);
-            this.ghost3.anchor.set(0.5);
-			this.ghost3.speed = this.GhostSpeed;
-			
-			this.physics.arcade.enable(this.ghost3);
-            this.ghost3.body.setSize(16, 16, 0, 0);
-			
-			this.ghost3.animations.add('walkRL', [0, 1, 2, 3, 4], 40, true);
-			this.ghost3.animations.add('walkUP', [5, 6, 7, 8, 9], 40, true);
-			this.ghost3.animations.add('walkDOWN', [10, 11, 12, 13, 14], 40, true);
-			
-			this.ghost3.play('walkRL');
-			this.Gcurrent = Phaser.RIGHT;
-		
-		// ghost4 
-		
-		
-		this.ghost4 = this.add.sprite((32 * 16) + 8, (20 * 16) + 8, 'ghost', 0);
-            this.ghost4.anchor.set(0.5);
-			this.ghost4.speed = this.GhostSpeed;
-			
-			this.physics.arcade.enable(this.ghost4);
-            this.ghost4.body.setSize(16, 16, 0, 0);
-			
-			this.ghost4.animations.add('walkRL', [0, 1, 2, 3, 4], 40, true);
-			this.ghost4.animations.add('walkUP', [5, 6, 7, 8, 9], 40, true);
-			this.ghost4.animations.add('walkDOWN', [10, 11, 12, 13, 14], 40, true);
-			
-			this.ghost4.play('walkRL');
-			this.Gcurrent = Phaser.RIGHT;
-		
-		//allages
-		        this.life1 = this.add.sprite(175, 472, 'life');
-			this.life2 = this.add.sprite(195, 472, 'life');
-			this.life3 = this.add.sprite(215, 472, 'life');
-		
-		        this.life2.visible = false;
-			this.life3.visible = false;
-		
-		
-		
-		
-		timer = game.time.create(false);
-			timer.loop(1000, this.updateCounter, this);
-			timer.start();
-			this.StartCount = game.add.text(350, 231, scount, { fontSize: "30px", fill: "#fff"});
-			this.StartGameTime1 = game.add.text(329.5, 471.5, "Time: " + gametimeM + "':" + gametimeS + "''", { fontSize: "19px", fill: "#000"});
-			this.StartGameTime2 = game.add.text(327, 470, "Time: " + gametimeM + "':" + gametimeS + "''", { fontSize: "19px", fill: "#fff"});
-			
-		
-		
-		updateCounter: function () {
-			if (scount == "GO!" && gametimeS == "-"){ 	// START GAME & TIME!
-				scount= "";
-				
-		
-		this.input.disabled = false;
-				//this.move(Phaser.RIGHT);
-				this.moveG(Phaser.LEFT, this.ghost1);
-				this.moveG(Phaser.RIGHT, this.ghost2);
-				this.moveG(Phaser.LEFT, this.ghost3);
-				this.moveG(Phaser.RIGHT, this.ghost4);
-				
-				gametimeM = 0;
-				gametimeS = 0;
-		
-		
-		}
-			else if(gametimeS == 59 ){					// TIME: COUNTING MINUTES
-				gametimeM++;
-				gametimeS = 0;
-				if( gametimeM == 1 ){
-		
-		
-		                        this.ghost1.speed = this.FullGhostSpeed;
-					this.ghost2.speed = this.FullGhostSpeed;
-					this.ghost3.speed = this.FullGhostSpeed;
-					this.ghost4.speed = this.FullGhostSpeed;
-		
-		
-		
-					}
-			}
-			else if (gametimeS != "-"){					// TIME: COUNTING SECONDS
-				gametimeS++;
-			}
-			else if (tcount == 1){ 						// STARTING COUNT-DOWN "GO"
-				scount= "GO!";
-				
-			}
-		
-		       this.pacman = this.add.sprite((16 * 16) + 8, (15 * 16) + 8, 'pacman', 0);
-						this.pacman.anchor.set(0.5);
-						
-						this.physics.arcade.enable(this.pacman);
-						this.pacman.body.setSize(16, 16, 0, 0);
-						
-						//  MUNCH ANIMATIONS
-						this.pacman.animations.add('munchRL', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15], 40, true);
-						this.pacman.animations.add('munchUP', [16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31], 40, true);
-						this.pacman.animations.add('munchDOWN', [32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47], 40, true);
-						
-						this.pacman.play('munchRL');
-						this.move(Phaser.NONE);
-		   }
-	    }
-    }
-    
-	if(Rtile>0){								
-				Rtile--;
-			}
-			else if(Rtile==0){							
-				Rtile="";
-				this.cherry.callAll('kill');
-			}
-			if(SpeedCD>0){								
-				SpeedCD--;
-			}
-			else if(SpeedCD == 0){						
-				SpeedCD=null;
-				this.speed=150;
-				
-				
-			}	
-		        if( DifContinue == 1 && ChoseDif == false ){
-				this.GhostSpeed = 70;
-				this.FullGhostSpeed = 100;
-				
-				this.z1.speed = this.GhostSpeed;
-				this.z2.speed = this.GhostSpeed;
-				this.z3.speed = this.GhostSpeed;
-				this.z4.speed = this.GhostSpeed;
-				
-				ChoseDif = true;
-		        
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-	
-	    
-	    
-	    
-	    
-	    
-	    
-	    
-	    
-	    
-	    
-	    
-	    
-	    
-		
-	/*	
-		
 
             this.cursors = this.input.keyboard.createCursorKeys();
 
             this.pacman.play('munch');
             this.move(Phaser.LEFT);
-	    */
 	
 		
-	/*	
+		
 		// screen messages
 	    scoreTxt = game.add.text(30, 0,'Score: 0', {font: '20px 	Arial',  fill: '#FFFFFF'});
             bonusTxt = game.add.text(190,0,'Bonus: 0', {font: '20px 	Arial',  fill: '#FFFFFF'});
             livesTxt = game.add.text(330,0,'Lives: 3', {font: '20px 	Arial',  fill: '#FFFFFF'});
-		*/
+		
 		
 	
         },
@@ -517,180 +266,6 @@
             this.current = direction;
 	},
        
-		checkGKeys: function (ghost) {
-			if( this.Gcurrent == Phaser.NONE ) { 
-				this.Gcurrent = Phaser.RIGHT; 
-			}
-			if( this.Gcurrent == Phaser.RIGHT || this.Gcurrent == Phaser.LEFT ){
-				this.Granddir = game.rnd.integerInRange(1, 2);
-				if ( this.Granddir == 1) { this.Gdir = Phaser.UP }
-				else if ( this.Granddir == 2) { this.Gdir = Phaser.DOWN }
-				this.moveG(this.Zdir, ghost);
-			}
-			else if( this.Gcurrent == Phaser.UP || this.Gcurrent == Phaser.DOWN ){
-				this.Granddir = game.rnd.integerInRange(1, 4);
-				if ( this.Granddir == 1) { this.Gdir = Phaser.LEFT }
-				else if ( this.Granddir == 4) { this.Gdir = Phaser.RIGHT }
-				this.moveG(this.Gdir, ghost);
-			}
-			if( this.Gdir == Phaser.NONE ){
-				this.Gdir = Phaser.RIGHT;
-				this.moveG(this.Gdir, ghost);
-			}
-        },
-		
-		checkGDirection: function (turnTo) {
-            if (this.Gturning === turnTo || this.directions[turnTo] === null || this.directions[turnTo].index !== 1)
-            {
-                //  Invalid direction if they're already set to turn that way
-                //  Or there is no tile there, or the tile isn't index 1 (a floor tile)
-                return;
-            }
-            //  Check if they want to turn around and can
-            if (this.Gcurrent === this.opposites[turnTo])
-            {
-                this.moveG(turnTo);
-            }
-            else
-            {
-                this.Gturning = turnTo;
-                this.turnPoint.x = (this.marker.x * this.gridsize) + (this.gridsize / 2);
-                this.turnPoint.y = (this.marker.y * this.gridsize) + (this.gridsize / 2);
-            }
-        },
-        turnG: function (ghost) {
-            var cx = Math.floor(ghost.x);
-            var cy = Math.floor(ghost.y);
-            //  This needs a threshold, because at high speeds you can't turn because the coordinates skip past
-            if (!this.math.fuzzyEqual(cx, this.turnPoint.x, this.threshold) || !this.math.fuzzyEqual(cy, this.turnPoint.y, this.threshold))
-            {
-                return false;
-            }
-            //  Grid align before Zturning
-            ghost.x = this.turnPoint.x;
-            ghost.y = this.turnPoint.y;
-			if( ghost.body != null ){
-				ghost.body.reset(this.turnPoint.x, this.turnPoint.y);
-				this.moveG(this.Gturning, ghost);
-				this.Gturning = Phaser.NONE;
-			}
-			
-            return true;
-        },
-		
-        moveG: function (direction, ghost) {
-			
-            var Gspeed = ghost.speed;
-            if (direction === Phaser.LEFT || direction === Phaser.UP)
-            {
-                Gspeed = -Gspeed;
-            }
-            if (direction === Phaser.LEFT || direction === Phaser.RIGHT)
-            {
-                ghost.body.velocity.x = Gspeed;
-            }
-            else
-            {
-                ghost.body.velocity.y = Gspeed;
-            }
-            //  Reset the scale and angle (Pacman is facing to the right in the sprite sheet)
-            ghost.scale.x = 1;
-            ghost.angle = 0;
-            
-            
-            this.Gcurrent = direction;
-			if( this.Gcurrent == Phaser.NONE ) { 
-				this.Gcurrent = Phaser.RIGHT; 
-			}
-        },	
-		
-		
-		
-		killPacman: function(ghost) {						//++++++++++++++++++++ KILL OR BE KILLED ON COLLISION WITH ZOMBIE ++++++++++++++++++++\\
-			if( SpeedCD != null ){
-				ghost.destroy();
-			}
-			else{
-				this.lives--;
-				this.pacman.destroy();
-				this.pacman = this.add.sprite((16 * 16) + 8, (15 * 16) + 8, 'pacman', 0);
-				this.pacman.animations.add('munchRL', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15], 40, true);
-				this.pacman.animations.add('munchUP', [16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31], 40, true);
-				this.pacman.animations.add('munchDOWN', [32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47], 40, true);
-				this.pacman.anchor.set(0.5);
-				this.physics.arcade.enable(this.pacman);
-				this.pacman.body.setSize(16, 16, 0, 0);
-				this.pacman.play('munchRL');
-				this.move(Phaser.NONE);
-				if( this.lives == 0 ){
-					this.pacman.dead = true;
-					this.GameOver = game.add.text(140, 190, "GAME OVER", { fontSize: "80px", fill: "#a00000"});
-					this.YourTime = game.add.text(250, 266, "Your time: " + gametimeM + "':" + gametimeS + "''", { fontSize: "30px", fill: "#fff"});
-					
-		
-		
-		                         this.StartGameTime1.visible = false;
-					this.StartGameTime2.visible = false;
-		
-		
-				}
-			}
-		}
-		
-		
-		eatDot: function (pacman, dot) {
-		
-			this.score++;
-            		dot.kill();
-			
-			if (this.score %5 === 0 ){ 
-				Eat20Dotss.play();
-			}
-			
-			if (this.score == 50 && this.lives<3) {
-				this.score=0;
-				this.lives++;
-			}
-            		if (this.dots.total === 0){
-				
-				this.ghost1.destroy();
-				this.ghost2.destroy();
-				this.ghost3.destroy();
-				this.ghost4.destroy();
-				
-				
-				this.GameOver = game.add.text(190, 190, "YOU WIN!", { fontSize: "80px", fill: "#a00000"});
-				this.YourTime = game.add.text(250, 266, "Your time: " + gametimeM + "':" + gametimeS + "''", { fontSize: "30px", fill: "#fff"});
-				
-				this.StartGameTime1.visible = false;
-				this.StartGameTime2.visible = false;
-		
-		
-		
-		
-		
-		               this.pacman.dead = true;
-				
-				
-				
-                	//this.dots.callAll('revive');
-           	}
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-	/*	
-		
         eatDot: function (pacman, dot) {
 
             dot.kill();
@@ -712,12 +287,9 @@
 
         },
 
-	*/
-        eatCherry: function(pacman,cherry){
-            Rtile="";
-			this.cherry.callAll('kill');
-			this.speed=200;
-			SpeedCD = 5;
+	
+       eatCherry: function(pacman,cherry){
+            cherry.kill();
 	   
 	    var audio = new Audio('assets/eatfruit.wav');
             audio.play()	
@@ -731,82 +303,13 @@
 	    
          },	
        
-		 
-		 
-		 
-		 
-		 
-	  
+	    */
 	    
 	    update: function () {
           
-		    
-		  if(this.pacman.dead==true){	  
-		    
-		              this.input.disabled = true;
-		               this.speed=0;
-		               timer.stop();
-		    
-		    
-		  }
-		    
-		 this.CurrentScore1.text = "Score: " + this.score;
-			this.CurrentScore2.text = "Score: " + this.score;
-			
-			// Lives
-			this.CurrentLives1.text = "Lives: ";
-			this.CurrentLives2.text = "Lives: ";
-			if(this.lives==0){
-				this.life1.visible = false;
-				this.life2.visible = false;
-				this.life3.visible = false;
-			}
-			else if(this.lives==1){
-				this.life1.visible = true;
-				this.life2.visible = false;
-				this.life3.visible = false;
-			}
-			else if(this.lives==2){
-				this.life1.visible = true;
-				this.life2.visible = true;
-				this.life3.visible = false;
-			}
-			else if(this.lives==3){
-				this.life1.visible = true;
-				this.life2.visible = true;
-				this.life3.visible = true;
-			}   
-		    
-		        this.StartCount.text = scount;
-			this.StartGameTime1.text = "Time: " + gametimeM + ":" + gametimeS + "''";
-			this.StartGameTime2.text = "Time: " + gametimeM + "':" + gametimeS + "''";
-		    
-		    
-		        this.physics.arcade.collide(this.ghost1, this.layer1, this.checkGKeys, null, this);
-			this.physics.arcade.overlap(this.z1, this.pacman, this.killPacman, null, this);
-			
-			
-			this.physics.arcade.collide(this.ghost2, this.layer1, this.checkGKeys, null, this);
-			this.physics.arcade.overlap(this.ghost2, this.pacman, this.killPacman, null, this);
-			
-			
-			this.physics.arcade.collide(this.ghost3, this.layer1, this.checkGKeys, null, this);
-			this.physics.arcade.overlap(this.ghost3, this.pacman, this.killPacman, null, this);
-			
-			
-			this.physics.arcade.collide(this.ghost4, this.layer1, this.checkGKeys, null, this);
-			this.physics.arcade.overlap(this.ghost4, this.pacman, this.killPacman, null, this);
-            
-		    
-		    
-		    
-		    
-		    
-		    
-		    
             this.physics.arcade.collide(this.pacman, this.layer);
             this.physics.arcade.overlap(this.pacman, this.dots, this.eatDot, null, this);
-            this.physics.arcade.overlap(this.pacman, this.cherries, this.eatCherry, null, this); //bonus
+            this.physics.arcade.overlap(this.pacman, this.cherries, this.eatCherry, null, this);//bonus
            
             this.marker.x = this.math.snapToFloor(Math.floor(this.pacman.x), this.gridsize) / this.gridsize;
             this.marker.y = this.math.snapToFloor(Math.floor(this.pacman.y), this.gridsize) / this.gridsize;
@@ -824,13 +327,6 @@
                 this.turn();
             }
 
-		this.turnG(this.ghost1);
-			
-			if( OK == false && this.InfodimBack == null ){
-				this.InfodimBack.visible = true;
-			}    
-		    
-		    
         }
 
     };
