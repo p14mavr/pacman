@@ -83,10 +83,7 @@
 
             this.load.image('dot', 'assets/coin.png');
             // this.load.image('coin','assets/coin.png');
-            
-            
-            this.load.image('cherry', 'assets/cherry.png');// ANTIKEIMENO KERASI
-            
+                            this.load.image('cherry', 'assets/cherry.png');// ANTIKEIMENO KERAS
             this.load.image('tiles', 'assets/pacman-tiles.png');
             this.load.spritesheet('pacman', 'assets/birdcar.png', 32, 32);
 	    this.load.tilemap('map', 'assets/pacman-map3.json', null, Phaser.Tilemap.TILED_JSON);
@@ -103,7 +100,7 @@
             this.layer = this.map.createLayer('Pacman');
 
             this.dots = this.add.physicsGroup();
-            //this.cherries = this.add.physicsGroup();
+                        this.cherrys = this.add.physicsGroup();
 		        
 	    
 	    
@@ -111,17 +108,17 @@
 	  
            
             this.map.createFromTiles(7, this.safetile, 'dot', this.layer, this.dots)
-            this.map.createFromTiles(3, this.safetile, 'cherry', this.layer, this.dots);
+                           this.map.createFromTiles(3, this.safetile, 'cherry', this.layer, this.cherrys);
             
 
   
-       
+        
             
             //  The dots will need to be offset by 6px to put them back in the middle of the grid
             this.dots.setAll('x', 6, false, false, 1);
             this.dots.setAll('y', 6, false, false, 1);
-            //this.coins.setAll('x', 12, false, false, 1);
-            //this.coins.setAll('y', 12, false, false, 1);
+                    this.cherrys.setAll('x', 0, false, false, 1);
+              this.cherrys.setAll('y', 0 , false, false, 1);
       
 	 
             
