@@ -29,8 +29,7 @@
     var lives=3;
     var livesTxt;
    
-    Gdir = null;
-    Granddir = null;    
+     
 
     var game = new Phaser.Game(498, 496, Phaser.AUTO); // to allaxa gia na mporw na topo8etisw score zwes kai bonus
 
@@ -149,7 +148,13 @@
             bonusTxt = game.add.text(190,0,'Bonus: 0', {font: '20px 	Arial',  fill: '#FFFFFF'});
             livesTxt = game.add.text(330,0,'Lives: 3', {font: '20px 	Arial',  fill: '#FFFFFF'});
 		
-		
+		 for (var i = 0; i < 3; i++) 
+		    {
+			var pacman = lives.create(game.world.width - 235 + (30 * i), 517, 'pacman');
+			pacman.anchor.setTo(0.5, 0.5);
+			pacman.angle = 90;
+			pacman.alpha = 0.4;
+		    }	
 	
         },
 
@@ -288,7 +293,7 @@
         },
 
 	
-       /* eatCherry: function(pacman,cherry){
+      eatCherry: function(pacman,cherry){
             cherry.kill();
 	   
 	    var audio = new Audio('assets/eatfruit.wav');
@@ -302,7 +307,22 @@
 	  
 	    
          },	
-       */
+	    
+	    
+	  eatCherry: function(pacman,cherry){
+            cherry.kill();
+	   
+	    var audio = new Audio('assets/eatfruit.wav');
+            audio.play()	
+		
+            this.bonus += 100;
+            this.bonusTxt.text = 'Bonus : ' + bonus;
+	   
+         
+	  
+	    
+         },	   
+
 	    
 	    
 	    update: function () {
