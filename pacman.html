@@ -109,9 +109,9 @@
 	    
 		
 	  
-           
-            this.map.createFromTiles(7, this.safetile, 'dot', this.layer, this.dots)
             this.map.createFromTiles(35, this.safetile, 'cherry', this.layer, this.cherrys);
+            this.map.createFromTiles(7, this.safetile, 'dot', this.layer, this.dots)
+          
           
 	    
   
@@ -120,7 +120,8 @@
             //  The dots will need to be offset by 6px to put them back in the middle of the grid
             this.dots.setAll('x', 6, false, false, 1);
             this.dots.setAll('y', 6, false, false, 1);
-            this.cherrys.setAll('x', 6, false, false, 1);
+            
+	    this.cherrys.setAll('x', 6, false, false, 1);
             this.cherrys.setAll('y', 6, false, false, 1);
       
 	 
@@ -152,7 +153,7 @@
 		
             for (var i = 0; i < 3; i++) 
 		    {
-			var pacman = lives.create(game.world.width - 225 + (30 * i), 517, 'lifes');
+			var pacman = lives.create(game.world.width - 225 + (30 * i), 517, 'life');
 			pacman.anchor.setTo(0.5, 0.5);
 			pacman.angle = 90;
 			pacman.alpha = 0.4;
@@ -279,12 +280,12 @@
 
             dot.kill();
 	   
+	    
+	    this.score+= 10;
+            this.scoreTxt.text= 'Score : ' + this.score;
+            
 	    var audio = new Audio('assets/sound.mp3');
             audio.play()
-	    
-	    score += 10;
-            scoreTxt.text = 'Score : ' + score;
-            
 		
             
             if (this.dots.total === 0)
