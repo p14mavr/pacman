@@ -19,7 +19,7 @@
     </audio>
 
     <script type="text/javascript">
-	    
+/*	    
     var score =0;
     var scoreTxt;
     
@@ -29,7 +29,7 @@
     var lives=3;
     var livesTxt;
    
-     
+     */
 
     var game = new Phaser.Game(498, 496, Phaser.AUTO); // to allaxa gia na mporw na topo8etisw score zwes kai bonus
 
@@ -56,6 +56,14 @@
         this.current = Phaser.NONE;
         this.turning = Phaser.NONE;
               
+	   
+	    
+	    this.score=0;
+        this.scoreText='';
+	    
+	    this.bonus=0;
+        this.bonusText=''; 
+	    
 	    
 	    
     };
@@ -82,12 +90,10 @@
            this.load.crossOrigin = 'anonymous';
 
             this.load.image('dot', 'assets/coin.png');
-            // this.load.image('coin','assets/coin.png');
-                            this.load.image('cherry', 'assets/cherry.png');// ANTIKEIMENO KERAS
             this.load.image('tiles', 'assets/pacman-tiles.png');
             this.load.spritesheet('pacman', 'assets/birdcar.png', 32, 32);
 	    this.load.tilemap('map', 'assets/pacman-map3.json', null, Phaser.Tilemap.TILED_JSON);
-
+             this.load.image('cherry', 'assets/cherry.png');// ANTIKEIMENO KERASI
             //  Needless to say, graphics (C)opyright Namco
 
         },
@@ -100,7 +106,7 @@
             this.layer = this.map.createLayer('Pacman');
 
             this.dots = this.add.physicsGroup();
-                        this.cherrys = this.add.physicsGroup();
+            this.cherrys = this.add.physicsGroup();
 		        
 	    
 	    
@@ -108,7 +114,7 @@
 	  
            
             this.map.createFromTiles(7, this.safetile, 'dot', this.layer, this.dots)
-                           this.map.createFromTiles(35, this.safetile, 'cherry', this.layer, this.cherrys);
+            this.map.createFromTiles(35, this.safetile, 'cherry', this.layer, this.cherrys);
             
 
   
@@ -117,8 +123,12 @@
             //  The dots will need to be offset by 6px to put them back in the middle of the grid
             this.dots.setAll('x', 6, false, false, 1);
             this.dots.setAll('y', 6, false, false, 1);
-                    this.cherrys.setAll('x', 0, false, false, 1);
-              this.cherrys.setAll('y', 0 , false, false, 1);
+
+		
+		
+		
+	    this.cherrys.setAll('x', 6, false, false, 1);
+            this.cherrys.setAll('y', 6 , false, false, 1);
       
 	 
             
@@ -140,11 +150,31 @@
 	
 		
 		
+		this.bonusText = game.add.text(350, 500, 'Bonus: 0', { fontSize: '20px Arial', fill: 'orange' });
+            
+            
+            this.scoreText = game.add.text(0, 500, 'Score: 0', { fontSize: '20px Arial', fill: 'yellow' });
+            
+            lives = game.add.group();
+            game.add.text(game.world.width - 340, 500, 'Lives : ', { fontSize: '20px Arial', fill: 'white' });
+            
+            for (var i = 0; i < 3; i++) 
+		    {
+			var pacman = lives.create(game.world.width - 235 + (30 * i), 517, 'pacman');
+			pacman.anchor.setTo(0.5, 0.5);
+			pacman.angle = 90;
+			pacman.alpha = 0.4;
+		    }
+		
+		
+		
+		
+	/*	
 		// screen messages
 	    scoreTxt = game.add.text(30, 0,'Score: 0', {font: '20px 	Arial',  fill: '#FFFFFF'});
             bonusTxt = game.add.text(190,0,'Bonus: 0', {font: '20px 	Arial',  fill: '#FFFFFF'});
             livesTxt = game.add.text(330,0,'Lives: 3', {font: '20px 	Arial',  fill: '#FFFFFF'});
-		
+	*/	
 		
 	
         },
@@ -266,18 +296,22 @@
 
             dot.kill();
 	   
+	    this.score+=10;
+            this.scoreText.text= 'Score: ' + this.score;
+		
+		
+		
+		
 	    var audio = new Audio('assets/sound.mp3');
             audio.play()
 	    
-	    score += 10;
-            scoreTxt.text = 'Score : ' + score;
-            
+	 
 		
             
             if (this.dots.total === 0)
             {
                 this.dots.callAll('revive');
-	       // this.cherries.callAll('revive');    
+	        
             }
 		
 
@@ -286,17 +320,23 @@
 	
       eatCherry: function(pacman,cherry){
             cherry.kill();
-	   
-	    var audio = new Audio('assets/eatfruit.wav');
-            audio.play()	
 		
-            this.bonus += 100;
-            this.bonusTxt.text = 'Bonus : ' + bonus;
-	   
-            this.score+=100;
+                this.bonus += 50;
+            this.score+=50;
+	    this.bonusTxt.text = 'Bonus : ' + bonus;
 	    this.scoreText.text= 'Score: ' + score;
 	  
-	    
+	    var audio = new Audio('assets/eatfruit.wav');
+            audio.play()	
+	      
+	        if (this.dots.total === 0)
+                {
+                    this.dots.callAll('revive');
+	       
+                }
+	      
+	      
+	      
          },	
 	    
 	    
@@ -306,7 +346,7 @@
           
             this.physics.arcade.collide(this.pacman, this.layer);
             this.physics.arcade.overlap(this.pacman, this.dots, this.eatDot, null, this);
-            this.physics.arcade.overlap(this.pacman, this.cherries, this.eatCherry, null, this);//bonus
+            this.physics.arcade.overlap(this.pacman, this.cherrys, this.eatCherry, null, this);//bonus
            
             this.marker.x = this.math.snapToFloor(Math.floor(this.pacman.x), this.gridsize) / this.gridsize;
             this.marker.y = this.math.snapToFloor(Math.floor(this.pacman.y), this.gridsize) / this.gridsize;
